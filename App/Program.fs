@@ -2,6 +2,7 @@
 open System.Globalization
 open System.Text.RegularExpressions
 open FSharp.Data
+open XPlot.Plotly
 
 let convertRevenue str = Regex("(\$|,)").Replace(str, String.Empty)
                             |> Decimal.Parse
@@ -20,3 +21,13 @@ let films = StarWarsSearch().Tables.``Box office performanceEdit``.Rows
                 |> Seq.toArray
 
 films |> Seq.iter (fun elem -> elem ||> printf "%s - %f Billions \n")
+
+let layout = Layout(title = "Basic Bar Chart")
+
+let chart1 =
+    films
+    |> Chart.Bar
+    |> Chart.WithLayout layout
+    |> Chart.WithWidth 500
+    |> Chart.WithHeight 700
+    |> Chart.Show
